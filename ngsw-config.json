@@ -3,7 +3,7 @@
   "index": "/index.html",
   "assetGroups": [
     {
-      "name": "Plotavenue Hangouts Manager",
+      "name": "Plotavenue Hangout Manager",
       "installMode": "prefetch",
       "resources": {
         "files": [

@@ -164,5 +164,11 @@ mat-progress-bar {
   width: 80px;
 }
 .prof-img {
-  background: grey;
+  background: #eeeeee;
+  mat-icon {
+    color: grey;
+  }
+}
+.card-ava {
+  margin-right: 10px;
 }

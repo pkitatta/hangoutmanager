@@ -143,8 +143,14 @@ export class StaffComponent implements OnInit {
   }
 
   showLevel(manager: any) {
-    if (this.adminLevel >= manager.level) {
+    if (this.adminLevel >= 2) {
       this._snackBar.open('You are not authorised to edit owners', 'OK', {
+        duration: 9000
+      });
+      return;
+    }
+    if (this.hangInfo.pivot.user_id === manager.user_id) {
+      this._snackBar.open('You are not authorised to edit yourself', 'OK', {
         duration: 9000
       });
       return;
@@ -175,8 +181,14 @@ export class StaffComponent implements OnInit {
   }
 
   async removeAdmin(manager: any) {
-    if (this.adminLevel >= manager.level) {
+    if (this.adminLevel >= 2) {
       this._snackBar.open('You are not authorised to edit level', 'OK', {
+        duration: 9000
+      });
+      return;
+    }
+    if (this.hangInfo.pivot.user_id === manager.user_id) {
+      this._snackBar.open('Not authorised to remove yourself!', 'OK', {
         duration: 9000
       });
       return;

@@ -1,7 +1,7 @@
 {
-  "name": "Plotavenue Hangouts Manager",
-  "short_name": "Plotavenue Hangouts Manager",
-  "theme_color": "#1976d2",
+  "name": "Plotavenue Hangout Manager",
+  "short_name": "Plotavenue Hangout Manager",
+  "theme_color": "#180018",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",

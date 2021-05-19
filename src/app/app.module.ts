@@ -113,8 +113,8 @@ import { ImagePreviewComponent } from './pages/image-preview/image-preview.compo
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    // AngularFireModule.initializeApp(environment.firebase),
-    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireModule.initializeApp(environment.firebase),
+    // AngularFireModule.initializeApp(firebaseConfig),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable

@@ -2,14 +2,14 @@
   <mat-toolbar class="top mat-elevation-z8">
     <span>Plotavenue</span>
     <span class="toolbar-space"></span>
-    <div *ngIf="!useravatar || useravatar === ''" [matMenuTriggerFor]="beforeMenu" mat-card-avatar>
+    <div class="card-ava" *ngIf="!useravatar || useravatar === ''" [matMenuTriggerFor]="beforeMenu" mat-card-avatar>
       <button class="prof-img" mat-mini-fab>
         <mat-icon>
           person
         </mat-icon>
       </button>
     </div>
-    <div *ngIf="useravatar && useravatar !== ''" [matMenuTriggerFor]="beforeMenu" mat-card-avatar>
+    <div class="card-ava" *ngIf="useravatar && useravatar !== ''" [matMenuTriggerFor]="beforeMenu" mat-card-avatar>
       <button mat-mini-fab [style.background-image]="'url('+useravatar+')'" class="profile">
 
       </button>

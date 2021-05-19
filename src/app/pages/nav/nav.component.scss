@@ -22,7 +22,10 @@
   background-size: cover;
 }
 .prof-img {
-  background: grey;
+  background: #eeeeee;
+  mat-icon {
+    color: grey;
+  }
 }
 h3 {
   color: #443266 !important;
