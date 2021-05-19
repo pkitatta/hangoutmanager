@@ -1,0 +1,48 @@
+table {
+  width: 100%;
+}
+.tab-div {
+  margin: 20px 10px 20px 10px;
+}
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+::ng-deep .mat-tab-body-wrapper {
+  height: 75vh; //required height
+}
+.fab-div {
+  position: relative;
+  button {
+    position: absolute;
+    right: 10px;
+  }
+}
+.form-field {
+  width: 100%;
+}
+.add-card {
+  max-width: 500px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.box {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+.box .mat-input-element {
+  height: 18px;
+}
+.form-time {
+  max-width: 50%;
+  border-bottom: 1px solid grey;
+  margin-bottom: 24px;
+  margin-top: 20px;
+}
+.form-date {
+  max-width: 200px;
+}
+

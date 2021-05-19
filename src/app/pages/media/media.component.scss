@@ -1,0 +1,32 @@
+mat-grid-tile {
+  //background: lightblue;
+}
+.list-div {
+  margin-top: 10px;
+  margin-right: 5px;
+  margin-left: 5px;
+  padding-bottom: 50px;
+}
+.fab {
+  position: fixed !important;
+  bottom: 15px;
+  right: 15px;
+}
+mat-grid-list {
+  margin-bottom: 20px;
+}
+mat-tab {
+  padding-bottom: 100px;
+}
+::ng-deep .mat-tab-body-wrapper {
+  height: 75vh; //required height
+}
+.vid-div {
+  cursor: pointer;
+}
+.img-div {
+  cursor: pointer;
+}
+img:hover {
+  opacity: 0.5;
+}

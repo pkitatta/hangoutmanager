@@ -1,0 +1,32 @@
+.drink-ava {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+::ng-deep .mat-tab-body-wrapper {
+  height: 75vh; //required height
+}
+.drink-list {
+  h1 {
+    color: #180018;
+    margin-top: 10px;
+    margin-left: 10px;
+    //font-family: "monospace, Lucida Console", "Courier New", serif;
+  }
+}
+mat-expansion-panel-header {
+  height: 80px;
+}
+.ord-list {
+  h1 {
+    text-align: center;
+  }
+}
+.pay-alert {
+  margin-bottom: 10px;
+}
+
+//:host ::ng-deep .mat-tab-header {
+//  position: fixed !important;
+//  z-index:500;
+//}

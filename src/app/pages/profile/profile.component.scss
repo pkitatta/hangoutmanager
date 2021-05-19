@@ -1,0 +1,118 @@
+.profile-content {
+  //background-color: blueviolet;
+  margin: 40px 10px 40px 10px;
+}
+.service-content {
+  margin: 40px 10px 40px 10px;
+  //display: flex;
+}
+.body-content {
+  margin: 40px 10px 40px 10px;
+  //display: flex;
+}
+.cover-img {
+  position: relative;
+  img{
+    background-size: cover;
+  }
+  img:hover {
+    opacity: 0.5;
+  }
+}
+.cov-thumb {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  button {
+    background: rgb(255, 255, 255, 0.3);
+  }
+}
+.mat-grid-list {
+  padding: 0;
+}
+.info-card {
+  height: 100%;
+  width: 100%;
+}
+.info-message {
+  height: 100%;
+  width: 100%;
+  mat-card-content {
+    overflow-y: auto;
+    background: #eeeeee;
+    height: 300px;
+  }
+  p {
+    padding: 5px;
+  }
+}
+.info-mes-info {
+  padding: 10px;
+  color: white;
+  background: #443266;
+  border-radius: 20px;
+}
+.profile {
+  position: relative;
+  img {
+    background-size: cover;
+    height: 150px;
+    width: 150px;
+  }
+  img:hover {
+    opacity: 0.5;
+  }
+}
+.thumb {
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  button {
+    background: rgb(0, 0, 0, 0.5);
+  }
+}
+.thumb-icon {
+  position: relative;
+  background: grey;
+  text-align: center;
+  height: 150px;
+  width: 150px;
+  p {
+    height: 150px;
+    line-height: 150px;
+    vertical-align: middle;
+  }
+}
+.edit-thumb {
+  margin-top: 40%;
+}
+.label{
+  width: 80px;
+}
+.empty-price {
+  text-align: center;
+  height: 100px;
+  p {
+    height: 100px;
+    line-height: 100px;
+    vertical-align: middle;
+  }
+}
+.form-field {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 100%;
+}
+.icon-display {
+  height: 200px;
+}
+.icon-display mat-icon {
+  margin-top: 100px;
+  margin-left: 50%;
+  color: grey;
+  font-size: 50px;
+  width: 50px;
+}
+.chip-div {
+  margin-top: 20px;
+}

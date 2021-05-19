@@ -1,0 +1,74 @@
+<div class="home-content" *ngIf="!isCreate">
+  <mat-toolbar class="top mat-elevation-z8">
+    <span>Plotavenue</span>
+    <span class="toolbar-space"></span>
+    <div *ngIf="!useravatar || useravatar === ''" [matMenuTriggerFor]="beforeMenu" mat-card-avatar>
+      <button class="prof-img" mat-mini-fab>
+        <mat-icon>
+          person
+        </mat-icon>
+      </button>
+    </div>
+    <div *ngIf="useravatar && useravatar !== ''" [matMenuTriggerFor]="beforeMenu" mat-card-avatar>
+      <button mat-mini-fab [style.background-image]="'url('+useravatar+')'" class="profile">
+
+      </button>
+    </div>
+    <mat-menu #beforeMenu="matMenu" xPosition="before">
+      <button mat-menu-item (click)="logout()">Signout</button>
+    </mat-menu>
+  </mat-toolbar>
+  <div class="home-bg">
+    <button class="create-button" mat-raised-button color="accent" *ngIf="!progressBar && dataLength > 0" (click)="isCreate = true">
+      Add Hangout
+    </button>
+    <div class="loading" *ngIf="progressBar">
+      <p>Loading...</p>
+    </div>
+    <div class="welcome" *ngIf="!progressBar && dataLength === 0">
+      <p>Welcome to <span style="color:#fdc70f;">Plotavenue's</span> Hangout Manager</p>
+    </div>
+    <mat-progress-bar *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+  </div>
+  <mat-grid-list *ngIf="!progressBar && dataLength > 0" [gutterSize]="'40px'" class="hang-grid" [cols]="cols" rowHeight="100px">
+    <mat-grid-tile
+      (click)="goTo()"
+      *ngFor="let hangout of hangouts; index as i"
+      [colspan]="1"
+      [rowspan]="2">
+      <mat-card>
+        <mat-card-content>
+          <img mat-card-avatar class="profile" *ngIf="hangout.thumbnail" [src]='hangout.thumbnail.thumb' onerror="this.onerror=null;this.src='assets/images/profile.png';">
+          <div mat-card-avatar class="thumb-icon" *ngIf="!hangout.thumbnail">
+            <p>No Image</p>
+          </div>
+          <mat-card-title class="card-heading">{{hangout.name}}</mat-card-title>
+          <mat-card-subtitle>{{hangout.street_address}}, {{hangout.town}}, {{hangout.city.name}}</mat-card-subtitle>
+        </mat-card-content>
+<!--        <mat-card-actions align="end">-->
+<!--          <button class="hang-button" mat-raised-button color="primary">-->
+<!--            Enter-->
+<!--          </button>-->
+<!--        </mat-card-actions>-->
+        <a routerLink="/nav/{{i}}" class="fill-card"></a>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list *ngIf="!progressBar && dataLength === 0" [gutterSize]="'40px'" class="hang-grid" [cols]="cols" rowHeight="100px">
+    <mat-grid-tile
+      (click)="isCreate = true"
+      [colspan]="1"
+      [rowspan]="2">
+      <mat-card class="create-tile">
+        <mat-card-content>
+          <p>Create your hangout</p>
+        </mat-card-content>
+        <button class="card-button" mat-flat-button color="accent" (click)="isCreate = true">
+          Create
+        </button>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
+<app-hangout-add *ngIf="isCreate" (create)="updateData($event)"></app-hangout-add>

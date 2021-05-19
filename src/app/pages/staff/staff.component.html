@@ -1,0 +1,87 @@
+<mat-toolbar>
+  <h1>Management</h1>
+</mat-toolbar>
+<mat-progress-bar style="margin-bottom: 0" *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+<mat-card *ngIf="!roleEdit && !addStaff" class="card-content">
+  <mat-list>
+    <div class="drink-list" *ngFor="let item of managers | groupByCategory:'level'">
+      <h1>
+        {{item.key === '1' ? "Ownership" : item.key === '2' ? 'General Manager' : item.key === '3' ? 'Content Manager' : 'Service Manager'}}
+      </h1>
+      <mat-divider></mat-divider>
+      <mat-list>
+        <div *ngFor="let manager of item.value">
+          <mat-list-item>
+            <img matListAvatar *ngIf="manager.admin.firebase_pp" [src]="manager.admin.firebase_pp" alt="...">
+            <div matListAvatar class="man-ava" *ngIf="!manager.admin.firebase_pp"></div>
+            <h4 matLine> {{manager.admin.name}} </h4>
+            <p matLine> {{manager.admin.email}} </p>
+            <button mat-button color="accent" *ngIf="adminLevel < 3"  (click)="showLevel(manager)">Change</button>
+            <button mat-button color="warn" *ngIf="adminLevel < 3" (click)="removeAdmin(manager)">Remove</button>
+          </mat-list-item>
+          <mat-divider [inset]="true"></mat-divider>
+        </div>
+      </mat-list>
+    </div>
+  </mat-list>
+  <button mat-fab class="fab" color="primary" (click)="addAdmin()">
+    <mat-icon>person_add</mat-icon>
+  </button>
+</mat-card>
+<mat-card *ngIf="roleEdit && !addStaff">
+  <h3>
+    Change Role
+  </h3>
+  <mat-card-content>
+    <mat-radio-group aria-label="Select an option" [(ngModel)] = "value">
+      <mat-radio-button labelPosition="before" *ngIf="adminLevel === 1" value="1">Ownership</mat-radio-button>
+      <mat-radio-button labelPosition="before" *ngIf="adminLevel === 1" value="2">General Manager</mat-radio-button>
+      <mat-radio-button labelPosition="before" value="3">Content Manager</mat-radio-button>
+      <mat-radio-button labelPosition="before" value="4">Service Manager</mat-radio-button>
+    </mat-radio-group>
+  </mat-card-content>
+  <div matLine class="action-btn">
+    <button mat-stroked-button  (click)="roleEdit = !roleEdit; progressBar = false">Back</button>
+    <button mat-flat-button color="primary" (click)="update()">Done</button>
+  </div>
+</mat-card>
+
+<mat-card class="man-form" *ngIf="addStaff && !roleEdit">
+  <h3>
+    Add Manager
+  </h3>
+  <mat-vertical-stepper [linear]="true" #stepper>
+    <mat-step [stepControl]="firstFormGroup">
+      <form [formGroup]="firstFormGroup">
+        <ng-template matStepLabel>Fill out user email</ng-template>
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input matInput type="email" placeholder="Email" formControlName="email" required>
+        </mat-form-field>
+        <div>
+          <button mat-flat-button color="accent" [disabled]="!firstFormGroup.valid" (click)="checkEmail(stepper)" >Verify</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+      <form [formGroup]="secondFormGroup">
+        <ng-template matStepLabel>Assign role</ng-template>
+        <div>
+          <h4 *ngIf="user">username: <b>{{user.name}}</b> </h4>
+        </div>
+        <mat-radio-group aria-label="Select an option" formControlName="roles">
+          <mat-radio-button labelPosition="before" *ngIf="adminLevel === 1" value="1">Ownership</mat-radio-button>
+          <mat-radio-button labelPosition="before" *ngIf="adminLevel === 1" value="2">General Manager</mat-radio-button>
+          <mat-radio-button labelPosition="before" value="3">Content Manager</mat-radio-button>
+          <mat-radio-button labelPosition="before" value="4">Service Manager</mat-radio-button>
+        </mat-radio-group>
+        <div class="add-btn">
+          <button mat-flat-button color="primary" (click)="send(stepper)">Add</button>
+        </div>
+      </form>
+    </mat-step>
+  </mat-vertical-stepper>
+  <mat-card-actions align="start">
+    <button mat-stroked-button (click)="addStaff = false">Back</button>
+  </mat-card-actions>
+</mat-card>

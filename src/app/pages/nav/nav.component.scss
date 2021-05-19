@@ -1,0 +1,30 @@
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 200px;
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+.toolbar-space {
+  flex: 1 1 auto;
+}
+.profile {
+  background-size: cover;
+}
+.prof-img {
+  background: grey;
+}
+h3 {
+  color: #443266 !important;
+  font-weight: bold !important;
+}

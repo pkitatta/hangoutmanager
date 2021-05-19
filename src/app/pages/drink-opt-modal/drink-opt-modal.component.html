@@ -1,0 +1,74 @@
+<div class="content">
+  <mat-card class="imageCards">
+    <div>
+      <img class="menuImg" [src]="coverImage" alt="loading..."
+           onerror="this.onerror=null;this.src='assets/eventsFallbackImage.jpg';">
+    </div>
+  </mat-card>
+  <div class="my-card">
+    <mat-card-content>
+      <mat-card-title class="menuTitle">
+        {{menu.name}}
+      </mat-card-title>
+    </mat-card-content>
+    <mat-grid-list  [gutterSize]="'5px'" [cols]="cols" rowHeight="250px">
+      <mat-grid-tile
+        *ngFor="let opt of optList"
+        [colspan]="1"
+        [rowspan]="1">
+        <mat-card class="my-opt-card">
+          <div class="ava-photo">
+            <img [src]="opt.photoUrl">
+          </div>
+          <mat-card-content class="price">
+            <mat-label>
+              <p>{{opt.option}}</p>
+            </mat-label>
+          </mat-card-content>
+          <section class="price-sec">
+            <mat-label>Price: <b>{{opt.price ? opt.price.toString() : ''}}</b></mat-label>
+            <button mat-button color="accent" (click)="editPricePrompt(opt)">edit</button>
+          </section>
+          <section class="availability">
+<!--            <mat-label>Available</mat-label>-->
+            <mat-checkbox [(ngModel)]="opt.available" (click)="changeAvail(opt)">Available</mat-checkbox>
+          </section>
+          <button mat-raised-button color="warn" class="remove-btn" (click)="deleteOpt(opt)">
+            <mat-label style="color: white">Remove</mat-label>
+<!--            <mat-icon color="danger" slot="end">highlight_off</mat-icon>-->
+          </button>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <mat-progress-bar style="margin-bottom: 0" *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+    <mat-divider></mat-divider>
+
+    <div *ngIf="otherList && otherList.length > 0">
+      <mat-card-content>
+        <mat-card-title class="menuTitle">
+          Other Options
+        </mat-card-title>
+      </mat-card-content>
+      <mat-grid-list [gutterSize]="'5px'" [cols]="cols" rowHeight="250px">
+        <mat-grid-tile
+          *ngFor="let opt of otherList"
+          [colspan]="1"
+          [rowspan]="2">
+          <mat-card class="my-opt-card">
+            <div class="ava-photo">
+              <img [src]="opt.photoUrl">
+            </div>
+            <mat-card-content class="price">
+              <mat-label>
+                <p>{{opt.option}}</p>
+              </mat-label>
+            </mat-card-content>
+            <button mat-flat-button class="add-btn" (click)="addOpt(opt)">
+              Add
+            </button>
+          </mat-card>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+  </div>
+</div>

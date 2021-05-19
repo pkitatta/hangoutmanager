@@ -1,0 +1,138 @@
+<mat-toolbar>
+  <h1>Restaurant Service</h1>
+</mat-toolbar>
+<mat-tab-group mat-align-tabs="start" selectedIndex="1">
+  <mat-tab label="Menu">
+    <mat-list>
+      <div class="drink-list" *ngFor="let item of menuList | async | groupByCategory:'cat'">
+        <h1>{{item.key}}</h1>
+        <mat-divider></mat-divider>
+        <mat-list>
+          <div class="menu-item" matRipple *ngFor="let menu of item.value" (click)="menuDetail(menu)">
+            <mat-list-item>
+              <img *ngIf="menu.photoUrl" matListAvatar class="drink-ava" [src]="menu.photoUrl" alt="...">
+              <div *ngIf="!menu.photoUrl" matListAvatar style="background: grey"></div>
+              <h3 matLine>{{menu.name}}</h3>
+            </mat-list-item>
+            <mat-divider [inset]="true"></mat-divider>
+          </div>
+        </mat-list>
+      </div>
+    </mat-list>
+    <button color="primary" class="fab" mat-fab (click)="addMenu()">
+      <mat-icon>
+        add
+      </mat-icon>
+    </button>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span [matBadge]="orderList.length" matBadgeOverlap="false" [matBadgeHidden]="orderList.length < 1">Orders</span>
+    </ng-template>
+    <mat-accordion class="ord-list">
+      <mat-expansion-panel *ngFor="let order of orderList | orderBy:'orderTime':'asc'" (opened)="panelOpenState = true"
+                           (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <label>{{order.tableNumber}}</label>
+          </mat-panel-title>
+          <mat-panel-description>
+            {{order.order[0]['qty']}} {{order.order[0]['mealName']}}{{order.order.length > 1 ? '... +' + (order.order.length-1) +'more' : '' }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-card>
+          <mat-card-header><h1>{{order.tableNumber}}</h1></mat-card-header>
+          <p>Order By: {{order.orderBy.username}}</p>
+          <p>Order By: {{order.orderFor.username}}</p>
+          <p *ngIf="order.paymentMethod === ''" style="color: green;">
+            <b>Time: {{order.orderTime | date: 'hh:mm a'}}</b>
+          </p>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let i of order.order">
+                <p style="font-size: 20px">{{i['qty']}} {{i['mealName']}}</p>
+              </li>
+            </ul>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button mat-stroked-button *ngIf="!order.canceled" color="warn" (click)="cancelOrder(order)">
+              Cancel Order
+            </button>
+            <button mat-stroked-button *ngIf="order.canceled" color="primary" (click)="removeOrder(order)">
+              Remove from view
+            </button>
+            <button mat-stroked-button color="primary" *ngIf="!order.canceled"
+                    (click)="sendToDelivered(order)" slot="end">
+              Deliver
+              <mat-icon slot="end">chevron_right</mat-icon>
+            </button>
+          </mat-card-actions>
+          <mat-progress-bar *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+        </mat-card>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span [matBadge]="deliveredList.length" matBadgeOverlap="false" [matBadgeHidden]="deliveredList.length < 1">Delivered</span>
+    </ng-template>
+    <mat-accordion class="ord-list">
+      <mat-expansion-panel *ngFor="let order of deliveredList | orderBy:'orderTime':'asc'" (opened)="panelOpenState = true"
+                           (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <label>{{order.tableNumber}}</label>
+          </mat-panel-title>
+          <mat-panel-description>
+            {{order.order[0]['qty']}} {{order.order[0]['mealName']}}{{order.order.length > 1 ? '... +' + (order.order.length-1) +'more' : '' }}
+          </mat-panel-description>
+          <mat-icon *ngIf="order.paymentMethod === 'cash'" style="color: green;">paid</mat-icon>
+        </mat-expansion-panel-header>
+        <mat-card>
+          <mat-card-header><h1>{{order.tableNumber}}</h1></mat-card-header>
+          <p>Order By: {{order.orderBy.username}}</p>
+          <p>Order By: {{order.orderFor.username}}</p>
+          <p *ngIf="order.paymentMethod === ''" style="color: green;">
+            <b>Time: {{order.orderTime | date: 'hh:mm a'}}</b>
+          </p>
+          <div mat-line *ngIf="order.paymentMethod === 'cash'" class="pay-alert">
+            <span style="color: green">Payment: {{order.paymentMethod.toUpperCase()+' - Pending your confirmation'}}  </span>
+            <button mat-stroked-button color="warn" (click)="rejectCash(order)">Reject</button>
+            <button mat-stroked-button color="primary" *ngIf="!order.canceled"
+                    (click)="settlement(order,'cash')" slot="end">
+              Cash Rcvd
+              <mat-icon slot="end">chevron_right</mat-icon>
+            </button>
+          </div>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let i of order.order">
+                <p style="font-size: 20px">{{i['qty']}} {{i['mealName']}}</p>
+              </li>
+            </ul>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button mat-stroked-button *ngIf="!order.canceled && order.paymentMethod === ''" color="warn" (click)="cancelOrder(order)">
+              Cancel Order
+              <mat-icon slot="end">warning</mat-icon>
+            </button>
+            <button mat-stroked-button *ngIf="order.canceled" color="primary" (click)="removeOrder(order)">
+              Remove from view
+            </button>
+            <button mat-stroked-button color="primary" *ngIf="!order.canceled"
+                    (click)="settlement(order,'cash')" slot="end">
+              Cash Rcvd
+              <mat-icon slot="end">chevron_right</mat-icon>
+            </button>
+            <button mat-stroked-button color="primary" *ngIf="!order.canceled && order.paymentMethod === ''"
+                    (click)="settlement(order,'none')" slot="end">
+              Unpaid
+              <mat-icon slot="end">chevron_right</mat-icon>
+            </button>
+          </mat-card-actions>
+          <mat-progress-bar *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+        </mat-card>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-tab>
+</mat-tab-group>

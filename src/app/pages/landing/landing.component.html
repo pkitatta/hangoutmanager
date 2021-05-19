@@ -1,0 +1,68 @@
+<div class="content">
+  <mat-toolbar class="top">
+    <span>Plotavenue</span>
+    <span class="toolbar-space"></span>
+    <button mat-raised-button (click)="showForm = !showForm">Signin</button>
+  </mat-toolbar>
+  <div *ngIf="showForm" class="signin">
+    <mat-card>
+      <mat-card-content>
+<!--        <form [formGroup]="formData" (ngSubmit)="submit()">-->
+<!--          <mat-vertical-stepper formArrayName="formArray" linear>-->
+<!--            <mat-step formGroupName="email" [stepControl]="formData.get(['items', 0, 'email'])">-->
+
+<!--              <ng-template matStepLabel>Email</ng-template>-->
+<!--              <mat-form-field>-->
+<!--                <mat-label>Email</mat-label>-->
+<!--                <input type="email" matInput placeholder="name@email.com" formControlName="firstCtrl" required>-->
+<!--              </mat-form-field>-->
+
+<!--            </mat-step>-->
+<!--            <mat-step formGroupName="password" [stepControl]="formData.get('password')">-->
+<!--              <ng-template matStepLabel>Password</ng-template>-->
+<!--              <mat-form-field>-->
+<!--                <mat-label>Password</mat-label>-->
+<!--                <input type="password" matInput formControlName="secondCtrl"-->
+<!--                       required>-->
+<!--              </mat-form-field>-->
+<!--              <div>-->
+<!--                <button mat-raised-button color="primary" type="submit" [disabled]="!formData.valid">Submit</button>-->
+<!--              </div>-->
+<!--            </mat-step>-->
+<!--          </mat-vertical-stepper>-->
+<!--        </form>-->
+
+        <mat-vertical-stepper linear #stepper>
+          <mat-step [stepControl]="firstFormGroup">
+            <form [formGroup]="firstFormGroup">
+              <ng-template matStepLabel>Fill out your email</ng-template>
+              <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input type="email" matInput placeholder="name@email.com" formControlName="email" required>
+              </mat-form-field>
+            </form>
+          </mat-step>
+          <mat-step [stepControl]="secondFormGroup">
+            <form [formGroup]="secondFormGroup">
+              <ng-template matStepLabel>Fill out your password</ng-template>
+              <mat-form-field>
+                <mat-label>Password</mat-label>
+                <input minlength="6" type="password" matInput formControlName="password"
+                       required>
+              </mat-form-field>
+              <div>
+                <button mat-raised-button color="primary" type="submit" [disabled]="!firstFormGroup.valid || !secondFormGroup.valid" (click)="submit()">Submit</button>
+              </div>
+            </form>
+          </mat-step>
+        </mat-vertical-stepper>
+        <span *ngIf="errorMessage" style="color: red">Email or password incorrect</span>
+        <mat-progress-bar *ngIf="progressBar && !errorMessage" mode="indeterminate"></mat-progress-bar>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="card-content">
+    <div class="card-title">Welcome to Plotavenue's Hangout Manager</div>
+    <div class="card-subtitle">Connect with your customers through the world's fastest growing social-leisure ecosystem.</div>
+  </div>
+</div>

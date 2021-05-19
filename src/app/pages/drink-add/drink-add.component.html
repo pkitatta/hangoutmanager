@@ -1,0 +1,60 @@
+<mat-toolbar>
+  <h1>Beverage Brands</h1>
+  <span class="searchbar-space"></span>
+  <button style="margin-left: fill" mat-button (click)="showSearchbar = !showSearchbar">Search <mat-icon>search</mat-icon></button>
+</mat-toolbar>
+<div *ngIf="showSearchbar"  class="search">
+  <mat-form-field class="search-bar">
+    <input matInput type="text"
+           [(ngModel)]="queryText"
+           (ngModelChange)="searchEvent()"
+           placeholder="Search by {{searchValue.value}}">
+    <button mat-button *ngIf="queryText" matSuffix mat-icon-button aria-label="Clear" (click)="queryText=''; searchEvent()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <mat-radio-group aria-label="Select an option" [formControl]="searchValue">
+    <mat-radio-button labelPosition="before" value="name">Name</mat-radio-button>
+    <mat-radio-button labelPosition="before" value="type">Type</mat-radio-button>
+    <mat-radio-button labelPosition="before" value="country">Country</mat-radio-button>
+  </mat-radio-group>
+</div>
+<div class="mat-elevation-z8 tab-div">
+  <mat-progress-bar style="margin-bottom: 0" *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+  <table mat-table [dataSource]="dataSource" matSort>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+      <td class="name-cell" mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
+      <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="country">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Origin </th>
+      <td mat-cell *matCellDef="let element"> {{element.country}} </td>
+    </ng-container>
+
+    <!-- Action Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="drinkDetail(element)">
+          <mat-icon color="primary">add</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+  <mat-paginator [pageSizeOptions]="[50, 100, 150]" showFirstLastButtons></mat-paginator>
+</div>

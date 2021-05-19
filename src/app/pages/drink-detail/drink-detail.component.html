@@ -1,0 +1,30 @@
+<mat-card>
+  <mat-card-header>
+    <h1>{{drink.name}}</h1>
+    <div style="margin-left: 30px">
+      <button mat-flat-button color="primary" (click)="addDrink()">
+        Add
+      </button>
+    </div>
+  </mat-card-header>
+  <mat-card-subtitle>Select serving options (this can be changed later if you wish)</mat-card-subtitle>
+  <mat-grid-list [gutterSize]="'5px'" [cols]="cols" rowHeight="200px">
+    <mat-grid-tile
+      [colspan]="1"
+      [rowspan]="1"
+      *ngFor="let option of optList">
+      <div class="ava-img">
+        <img [src]="option.photoUrl">
+      </div>
+      <mat-grid-tile-footer>
+        <mat-checkbox [(ngModel)]="option.isChecked" labelPosition="before">{{option.option}}</mat-checkbox>
+      </mat-grid-tile-footer>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <mat-progress-bar *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+<!--  <mat-card-actions align="end">-->
+<!--    <button mat-flat-button color="primary" (click)="addDrink()">-->
+<!--      Add-->
+<!--    </button>-->
+<!--  </mat-card-actions>-->
+</mat-card>

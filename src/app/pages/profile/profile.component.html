@@ -1,0 +1,423 @@
+<div *ngIf="!imgCrop">
+  <!--  <mat-card>-->
+  <!--    <mat-grid-list [gutterSize]="'0px'" [cols]="cols" rowHeight="200px">-->
+  <!--      <mat-grid-tile-->
+  <!--        [colspan]="1"-->
+  <!--        [rowspan]="2"-->
+  <!--        style="background: aqua">-->
+  <!--        <img [src]='coverImage'  class="cover-img">-->
+  <!--      </mat-grid-tile>-->
+  <!--      <mat-grid-tile-->
+  <!--        [colspan]="1"-->
+  <!--        [rowspan]="2"-->
+  <!--        style="background: #443266">-->
+  <!--        <p>{{hangInfo.name}}</p>-->
+  <!--      </mat-grid-tile>-->
+  <!--    </mat-grid-list>-->
+  <!--  </mat-card>-->
+  <mat-card class="body-content">
+    <mat-grid-list [gutterSize]="'0px'" [cols]="cols" rowHeight="250px">
+      <mat-grid-tile
+        [colspan]="1"
+        [rowspan]="2"
+        class="cover-img"
+        style="background: black">
+        <img [src]='coverImage' mat-card-image>
+        <div class="cov-thumb">
+          <button mat-fab color="primary" aria-label="Upload new photo" (click)="imgCrop = true; type = 'cover'">
+            <mat-icon>add_a_photo</mat-icon>
+          </button>
+        </div>
+      </mat-grid-tile>
+
+      <mat-grid-tile
+        *ngIf="!edit"
+        [colspan]="1"
+        [rowspan]="2">
+        <mat-card class="info-card">
+          <mat-card-content>
+            <mat-card-header>
+              <div class="profile">
+                <img mat-card-avatar *ngIf="thumbImage" [src]="thumbImage">
+                <div class="thumb" *ngIf="thumbImage">
+                  <button mat-mini-fab color="primary" aria-label="Upload new photo" (click)="imgCrop = true; type = 'hangoutthumb'">
+                    <mat-icon>add_a_photo</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div mat-card-avatar class="thumb-icon" *ngIf="!thumbImage">
+                <p>No Image</p>
+                <div class="thumb">
+                  <button mat-mini-fab color="primary" aria-label="Upload new photo" (click)="imgCrop = true; type = 'hangoutthumb'">
+                    <mat-icon>add_a_photo</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </mat-card-header>
+            <mat-list>
+              <mat-list-item>
+                <div class="label">
+                  <mat-label>Name: </mat-label>
+                </div>
+                <mat-label><b>{{hangInfo.name}}</b></mat-label>
+              </mat-list-item>
+              <mat-list-item>
+                <div class="label">
+                  <mat-label>Address:</mat-label>
+                </div>
+                <mat-label><b>{{hangInfo.street_address}}, {{hangInfo.town}}</b></mat-label>
+              </mat-list-item>
+              <mat-list-item>
+                <div class="label">
+                  <mat-label>City:</mat-label>
+                </div>
+                <mat-label><b>{{hangInfo.city.name}}</b></mat-label>
+              </mat-list-item>
+              <mat-list-item>
+                <div class="label">
+                  <mat-label>Currency:</mat-label>
+                </div>
+                <mat-label><b>{{hangInfo.currency_code}}</b></mat-label>
+              </mat-list-item>
+              <mat-list-item>
+                <div class="label">
+                  <mat-label>Category:</mat-label>
+                </div>
+                <mat-label><b>{{hangInfo.category}}</b></mat-label>
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button mat-flat-button color="accent" (click)="onClickEdit()">
+              Edit
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+
+      <!--    edit modal -->
+      <mat-grid-tile
+        *ngIf="edit"
+        [colspan]="1"
+        [rowspan]="2">
+        <mat-card class="info-card">
+          <form [formGroup]="formData" (ngSubmit)="submit()">
+            <div class="plotCard">
+              <mat-form-field class="form-field" [ngClass]="{'error-border':!formData.controls.name.valid && formData.controls.name.touched}">
+                <mat-label class="labels" >Hangout Name</mat-label>
+                <input matInput type="text" formControlName="name">
+              </mat-form-field>
+              <span *ngIf="formData.controls.name.hasError('required') && formData.controls.name.touched"
+                    style="color:red;font-size: 12px">
+      Sorry, field name is required!
+    </span>
+
+              <mat-form-field class="form-field"
+                              [ngClass]="{'error-border':!formData.controls.street_address.valid && formData.controls.street_address.touched}">
+                <mat-label class="labels" >Street Address</mat-label>
+                <input matInput formControlName="street_address">
+              </mat-form-field>
+              <span *ngIf="formData.controls.street_address.hasError('required') && formData.controls.street_address.touched"
+                    style="color:red;font-size: 12px">
+      Sorry, street or road name is required!
+    </span>
+
+              <mat-form-field class="form-field">
+                <mat-label>
+                  Category:
+                </mat-label>
+                <mat-select [value]="catName" (selectionChange)="catName = $event.value">
+                  <mat-option value="Bar">Bar</mat-option>
+                  <mat-option value="Bar & Restaurant">Bar & Restaurant</mat-option>
+                  <mat-option value="Beach">Beach</mat-option>
+                  <mat-option value="Beach & Bar">Beach & Bar</mat-option>
+                  <mat-option value="Beach & Bar & Restaurant">Beach & Bar & Restaurant</mat-option>
+                  <mat-option value="Beach & Restaurant">Beach & Restaurant</mat-option>
+                  <mat-option value="Club">Club</mat-option>
+                  <mat-option value="Hotel">Hotel</mat-option>
+                  <mat-option value="Hotel & Bar">Hotel & Bar</mat-option>
+                  <mat-option value="Hotel & Bar & Restaurant">Hotel & Bar & Restaurant</mat-option>
+                  <mat-option value="Hotel & Restaurant">Hotel & Restaurant</mat-option>
+                  <mat-option value="Restaurant">Restaurant</mat-option>
+                  <mat-option value="Sports">Sports</mat-option>
+                  <mat-option value="Sports & Bar">Sports & Bar</mat-option>
+                  <mat-option value="Sports & Bar & Restaurant">Sports & Bar & Restaurant</mat-option>
+                  <mat-option value="Sports & Restaurant">Sports & Restaurant</mat-option>
+                  <mat-option value="None">None</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field class="form-field" [ngClass]="{'error-border':!formData.controls.town.valid && formData.controls.town.touched}">
+                <mat-label class="labels" >Town</mat-label>
+                <input matInput type="text" formControlName="town">
+              </mat-form-field>
+              <span *ngIf="formData.controls.town.hasError('required') && formData.controls.town.touched"
+                    style="color:red;font-size: 12px">
+      Sorry, hangout town is required!
+    </span>
+
+              <mat-form-field class="form-field"
+                              [ngClass]="{'error-border':!formData.controls.city_name.valid && formData.controls.city_name.touched}">
+                <mat-label class="labels" >City</mat-label>
+                <input matInput formControlName="city_name" type="text" (keyup)=filter() [(ngModel)]=query  autocomplete="nope" placeholder="Type and then select from dropdown">
+              </mat-form-field>
+
+              <input type="hidden" formControlName="city_id" [ngModel]="cityId"  autocomplete="nope">
+
+              <div *ngIf="filteredList.length > 0">
+                <mat-list *ngFor="let city of filteredList">
+                  <mat-list-item class="drop-down" (click)="select(city)">
+                    {{city['name']}}
+                  </mat-list-item>
+                </mat-list>
+              </div>
+              <span *ngIf="formData.controls.city_name.hasError('required') && formData.controls.city_name.touched"
+                    style="color:red;font-size: 12px">
+      Sorry, your hangout city is required!
+    </span>
+
+              <mat-form-field class="form-field"
+                              [ngClass]="{'error-border':!formData.controls.currency_code.valid && formData.controls.currency_code.touched}">
+                <mat-label class="labels" >Currency Code</mat-label>
+                <input matInput formControlName="currency_code" type="text" (keyup)=filterCur()
+                       [(ngModel)]=queryCur>
+              </mat-form-field>
+
+              <div *ngIf="curfilteredList.length > 0">
+                <mat-list *ngFor="let cur of curfilteredList">
+                  <mat-list-item class="drop-down" (click)="selectCur(cur)">
+                    {{cur['cur_code']}}
+                  </mat-list-item>
+                </mat-list>
+              </div>
+              <span *ngIf="formData.controls.currency_code.hasError('required') && formData.controls.currency_code.touched"
+                    style="color:red;font-size: 12px">
+      Sorry, your preferred currency is required!
+    </span>
+
+            </div>
+
+            <mat-card-actions align="end">
+              <button mat-flat-button (click)="edit = false">
+                Cancel
+              </button>
+              <button mat-flat-button color="accent" class="submit" type="submit" [disabled]="!formData.valid">Update
+              </button>
+            </mat-card-actions>
+            <mat-progress-bar *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+          </form>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-card>
+
+  <mat-progress-bar *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+  <mat-card class="service-content">
+    <mat-card-title>
+      Services
+    </mat-card-title>
+    <div class="chip-div" *ngIf="!editServices">
+      <mat-card-content>
+        <mat-chip-list *ngIf="fbObj && services">
+          <mat-chip selected color="primary" *ngFor="let service of servicesList" (click)="goTo(service)">{{service | titlecase}}</mat-chip>
+        </mat-chip-list>
+        <p *ngIf="fbObj && !services">You have not yet added any business services</p>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button *ngIf="fbObj && services" mat-flat-button color="accent" (click)="editServices = true">
+          edit
+        </button>
+        <button *ngIf="fbObj && !services" mat-flat-button color="primary" (click)="editServices = true">
+          Set
+        </button>
+      </mat-card-actions>
+    </div>
+    <div class="chip-div" *ngIf="editServices">
+      <mat-card-content>
+        <mat-chip-list *ngIf="fbObj && services">
+          <mat-chip selected color="primary" *ngFor="let service of servicesList">
+            {{service | titlecase}}
+            <mat-icon (click)="removeService(service)">cancel</mat-icon>
+          </mat-chip>
+        </mat-chip-list>
+      </mat-card-content>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        <mat-chip-list>
+          <mat-chip (click)="addService('restaurant')">
+            <mat-icon color="primary" (click)="addService('restaurant')">add_circle</mat-icon>
+            Restaurant
+          </mat-chip>
+          <mat-chip (click)="addService('takeaway')">
+            <mat-icon color="primary" (click)="addService('takeaway')">add_circle</mat-icon>
+            TakeAway
+          </mat-chip>
+          <mat-chip (click)="addService('bar')">
+            <mat-icon color="primary" (click)="addService('bar')">add_circle</mat-icon>
+            Bar
+          </mat-chip>
+        </mat-chip-list>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-flat-button color="accent" (click)="editServices = false">
+          Done
+        </button>
+      </mat-card-actions>
+    </div>
+  </mat-card>
+
+  <mat-progress-bar style="margin-bottom: 0" color="accent" *ngIf="fbProgBar" mode="indeterminate"></mat-progress-bar>
+  <mat-card class="body-content">
+    <mat-grid-list [gutterSize]="'0px'" [cols]="cols" rowHeight="250px">
+      <mat-grid-tile
+        *ngIf="!editBasePrice"
+        [colspan]="1"
+        [rowspan]="2"
+        class="cover-img"
+        style="background: bisque">
+        <mat-card class="info-card">
+          <mat-card-title>Base Prices</mat-card-title>
+          <div  class="info-mes-info">
+            You can provide the base price for a drink or meal to give a quick snapshot of the pricing of your hangout.
+          </div>
+          <div class="icon-display">
+            <mat-icon>
+              local_atm
+            </mat-icon>
+          </div>
+          <mat-card-content>
+            <mat-list>
+              <mat-list-item *ngIf="fbObj && fbObj.drinkFoodBase">
+                <div class="label">
+                  <mat-label>
+                    {{fbObj.drinkFoodBase.name ? fbObj.drinkFoodBase.name : 'Beer Price'}}
+                  </mat-label>
+                </div>
+                <mat-label><b>{{fbObj.drinkFoodBase.price}}</b></mat-label>
+              </mat-list-item>
+              <mat-list-item *ngIf="fbObj && fbObj.entryBase">
+                <div class="label">
+                  <mat-label>
+                    {{fbObj.entryBase.name ? fbObj.entryBase.name : 'Entry Price'}}
+                  </mat-label>
+                </div>
+                <mat-label><b>{{fbObj.entryBase.price}}</b></mat-label>
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+          <mat-card-content *ngIf="fbObj && !fbObj.drinkFoodBase && !fbObj.entryBase">
+            <div class="empty-price">
+              <p>No base prices have been set</p>
+            </div>
+          </mat-card-content>
+          <mat-card-actions align="end">
+            <button mat-flat-button color="accent" (click)="onClickEditBasePrice()">
+              Edit
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+
+      <!--      Base price edit-->
+      <mat-grid-tile
+        *ngIf="editBasePrice"
+        [colspan]="1"
+        [rowspan]="2">
+        <mat-card class="info-card">
+          <form [formGroup]="basePrice" (ngSubmit)="submitBase()">
+            <mat-form-field class="form-field">
+              <mat-label>
+                Food or Drink:
+              </mat-label>
+              <mat-select [value]="itemName" (selectionChange)="itemName = $event.value">
+                <mat-option value="Beer Price">Beer Price</mat-option>
+                <mat-option value="Food Price">Food Price</mat-option>
+                <mat-option value="Drink Price">Drink Price</mat-option>
+                <mat-option value="Snack Price">Snacks Price</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="form-field">
+              <input matInput type="number" min="0" formControlName="item_price">
+            </mat-form-field>
+            <mat-form-field class="form-field">
+              <mat-label>
+                Entry Price:
+              </mat-label>
+              <mat-select [value]="entryName" (selectionChange)="entryName = $event.value">
+                <mat-option value="Entry Price">Entry Price</mat-option>
+                <mat-option value="RSVP">RSVP</mat-option>
+                <mat-option value="Drink Price">Drink Price</mat-option>
+                <mat-option value="Snack Price">Snacks Price</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="form-field">
+              <input matInput type="number" min="0" formControlName="entry_price">
+            </mat-form-field>
+
+            <mat-card-actions align="end">
+              <button mat-flat-button (click)="editBasePrice = false">
+                Cancel
+              </button>
+              <button mat-flat-button color="accent" class="submit" type="submit" (click)="submitBase()" [disabled]="!messageBoard.valid || this.progBarMess">Update
+              </button>
+            </mat-card-actions>
+            <mat-progress-bar *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+          </form>
+        </mat-card>
+      </mat-grid-tile>
+
+      <!--      Message board-->
+      <mat-grid-tile
+        *ngIf="!editMessage"
+        [colspan]="1"
+        [rowspan]="2">
+        <mat-card class="info-message">
+          <mat-card-title>Message board</mat-card-title>
+          <mat-card-content>
+            <p *ngIf="hangInfo.message_board" [innerHTML]="hangInfo.message_board | newline"></p>
+            <p *ngIf="!hangInfo.message_board">No message yet</p>
+          </mat-card-content>
+          <div  class="info-mes-info">
+            Communicate any additional information you would like to your customers, e.g. Upcoming events, discounts, or Public Relations Statement. Please keep it as short as you can.
+          </div>
+          <mat-card-actions align="end">
+            <button mat-flat-button color="accent" (click)="onClickEditMessage()">
+              Edit
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+
+      <!--    Message board edit modal -->
+      <mat-grid-tile
+        *ngIf="editMessage"
+        [colspan]="1"
+        [rowspan]="2">
+        <mat-card class="info-card">
+          <form>
+            <mat-form-field class="form-field">
+              <textarea matInput
+                        rows="20"
+                        type="text"
+                        placeholder="Type your message"
+                        [formControl]="messageBoard">
+              </textarea>
+              <mat-error *ngIf="messageBoard.hasError('maxlength')">
+                Max length is 2000.
+              </mat-error>
+            </mat-form-field>
+
+            <mat-card-actions align="end">
+              <button mat-flat-button (click)="editMessage = false">
+                Cancel
+              </button>
+              <button mat-flat-button color="accent" class="submit" type="submit" (click)="submitMessage()" [disabled]="!messageBoard.valid || this.progBarMess">Update
+              </button>
+            </mat-card-actions>
+            <mat-progress-bar *ngIf="progBarMess" mode="indeterminate"></mat-progress-bar>
+          </form>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-card>
+</div>
+<app-image-cropper *ngIf="imgCrop" [hangoutId]="hangoutId" [type]="type" (upload)="updateImg($event)"></app-image-cropper>

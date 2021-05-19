@@ -1,0 +1,58 @@
+<div *ngIf="header === 'Beer Price Edit'">
+  <form>
+    <h2 mat-dialog-title>{{header}}</h2>
+    <div mat-dialog-content>
+      <mat-form-field>
+        <input matInput type="number" [formControl]="beerPrice" min=0>
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-stroked-button mat-dialog-close>Cancel</button>
+      <button mat-flat-button color="accent" (click)="onBeerPriceEdit()" [disabled]="!beerPrice.valid">Update</button>
+    </div>
+  </form>
+</div>
+
+
+<div *ngIf="header === 'Theme Edit'">
+  <mat-progress-bar style="margin-top: 0" *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+  <form [formGroup]="formData">
+    <h2 mat-dialog-title>{{header}}</h2>
+    <div mat-dialog-content>
+
+      <!-- Theme Description -->
+      <mat-form-field class="form-field">
+        <mat-label class="labels" >Theme/Description</mat-label>
+        <textarea matInput
+                  rows="3"
+                  type="text"
+                  formControlName="description"></textarea>
+        <mat-error *ngIf="formData.controls.description.hasError('required') && formData.controls.description.touched">
+          Sorry, street or road name is required!
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Entry Price -->
+      <mat-form-field class="form-field">
+        <mat-label class="labels" >Entry Price</mat-label>
+        <input matInput type="number" min=0 formControlName="entry" placeholder="Put 0 (zero) if free" autocomplete="off">
+      </mat-form-field>
+
+    </div>
+
+  </form>
+  <div class="form-field">
+    <mat-label class="labels" >Start</mat-label>
+    <ngx-timepicker-field [(ngModel)]="start" [format]="24" [controlOnly]="true"></ngx-timepicker-field>
+  </div>
+  <div class="form-field">
+    <mat-label class="labels" >End</mat-label>
+    <ngx-timepicker-field [(ngModel)]="end" [format]="24" [controlOnly]="true"></ngx-timepicker-field>
+  </div>
+  <div mat-dialog-actions [align]="end">
+    <button mat-stroked-button mat-dialog-close>Cancel</button>
+    <button mat-flat-button color="accent" (click)="submit()" [disabled]="!formData.valid && start === end">Update</button>
+  </div>
+  <div>
+  </div>
+</div>

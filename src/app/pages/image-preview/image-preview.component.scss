@@ -1,0 +1,51 @@
+.img-div {
+  position: relative;
+  background: black;
+  height: 100%;
+  width: 100%;
+}
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+.back-btn{
+  margin-right: 10px;
+}
+.toolbar-space {
+  flex: 1 1 auto;
+}
+mat-toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: transparent;
+}
+button {
+  background: rgba(0,0,0,0.5);
+  color: white;
+}
+mat-icon {
+  color: white;
+}
+.des-div {
+  position: absolute;
+  //height: 100px;
+  bottom: 0;
+  //right: 0;
+  //left: 0;
+  width: 100%;
+}
+.input {
+  color: white;
+}
+.labels {
+  color: white;
+}
+mat-dialog-container {
+  background: black !important;
+}

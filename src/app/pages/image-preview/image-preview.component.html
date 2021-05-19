@@ -1,0 +1,23 @@
+<div class="img-div">
+  <mat-progress-bar style="margin-bottom: 0" *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+  <mat-toolbar>
+    <div class="back-btn">
+      <button mat-icon-button (click)="close()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <input type="file" accept="image/x-png,image/jpeg,image/gif" (change)="fileProgress($event)" />
+    </div>
+    <span class="toolbar-space"></span>
+    <div *ngIf="previewUrl">
+      <button mat-button *ngIf="!progressBar" (click)="onSubmit()">
+        <mat-icon>check</mat-icon>
+        Done
+      </button>
+    </div>
+  </mat-toolbar>
+  <img *ngIf="previewUrl" [src]="previewUrl">
+  <mat-form-field class="des-div">
+    <mat-label class="labels" >Add description (optional)</mat-label>
+    <input class="input" matInput maxlength="500" placeholder="Description (optional)" [formControl]='description'>
+  </mat-form-field>
+</div>

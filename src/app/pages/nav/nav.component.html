@@ -1,0 +1,77 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+               [mode]="(isHandset$ | async) ? 'over' : 'side'"
+               [opened]="(isHandset$ | async) === false">
+    <mat-toolbar  color="secondary">
+      <a mat-list-item routerLink="/" style="text-decoration: none">Plotavenue</a>
+    </mat-toolbar>
+    <mat-nav-list>
+      <mat-divider></mat-divider>
+      <h3 mat-subheader>Business Details</h3>
+      <a mat-list-item routerLink="/nav/{{hangIndex}}/profile/{{hangIndex}}">Basic</a>
+      <a mat-list-item routerLink="/nav/{{hangIndex}}/theme/{{hangIndex}}">Business Hours</a>
+      <div *ngIf="services">
+        <mat-divider></mat-divider>
+        <h3 mat-subheader>Services</h3>
+        <a *ngFor="let service of servicesList" mat-list-item routerLink='/nav/{{hangIndex}}/{{service}}/{{hangIndex}}'>{{service | titlecase}}</a>
+      </div>
+      <mat-divider></mat-divider>
+      <h3 mat-subheader>Menus</h3>
+      <a mat-list-item routerLink="/nav/{{hangIndex}}/adddrinks/{{hangIndex}}" (click)="changePageName('adddrinks')">Add drinks</a>
+      <mat-list-item (click)="addMenu()">Add Food</mat-list-item>
+      <mat-divider></mat-divider>
+      <h3 mat-subheader>Complementaries</h3>
+      <a mat-list-item routerLink="/nav/{{hangIndex}}/tickets/{{hangIndex}}">Tickets</a>
+      <mat-divider></mat-divider>
+      <h3 mat-subheader>Human Resource</h3>
+      <a mat-list-item routerLink="/nav/{{hangIndex}}/staff/{{hangIndex}}">Staff</a>
+      <mat-divider></mat-divider>
+      <h3 mat-subheader>Media</h3>
+      <a mat-list-item [routerLink]="['/nav/' + hangIndex + '/media/' + hangIndex,{type: 0}]">Hangout Photos</a>
+      <a mat-list-item [routerLink]="['/nav/' + hangIndex + '/media/' + hangIndex,{type: 1}]">User Photos</a>
+      <a mat-list-item [routerLink]="['/nav/' + hangIndex + '/media/' + hangIndex,{type: 2}]">Videos</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar class="mat-elevation-z8" color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          {{hangName}}
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+      </span>
+      <span class="toolbar-space"></span>
+      <div *ngIf="!useravatar || useravatar === ''" [matMenuTriggerFor]="beforeMenu" mat-card-avatar>
+        <button class="prof-img" mat-mini-fab>
+          <mat-icon>
+            person
+          </mat-icon>
+        </button>
+      </div>
+      <div *ngIf="useravatar && useravatar !== ''" [matMenuTriggerFor]="beforeMenu" mat-card-avatar>
+        <button mat-mini-fab [style.background-image]="'url('+useravatar+')'" class="profile">
+
+        </button>
+      </div>
+      <mat-menu #beforeMenu="matMenu" xPosition="before">
+        <button mat-menu-item (click)="logout()">Signout</button>
+      </mat-menu>
+    </mat-toolbar>
+    <mat-progress-bar *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item *ngFor="let hangout of hangouts; index as i" (click)="changeHang(hangout, i)">
+    <span>{{hangout.name}}</span>
+  </button>
+</mat-menu>

@@ -1,0 +1,97 @@
+<div>
+  <mat-card  class="body-content">
+    <mat-card-title>Create Hangout</mat-card-title>
+    <form [formGroup]="formData" (ngSubmit)="submit()">
+      <mat-form-field class="form-field">
+        <mat-label class="labels" >Hangout Name</mat-label>
+        <input  matInput type="text" formControlName="name">
+        <mat-error *ngIf="formData.controls.name.hasError('required') && formData.controls.name.touched">
+          Sorry, hangout name is required!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="form-field">
+        <mat-label class="labels" >Street Address</mat-label>
+        <input matInput formControlName="street_address">
+        <mat-error *ngIf="formData.controls.street_address.hasError('required') && formData.controls.street_address.touched">
+          Sorry, street or road name is required!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="form-field">
+        <mat-label>
+          Category:
+        </mat-label>
+        <mat-select [value]="catName" (selectionChange)="catName = $event.value">
+          <mat-option value="Bar">Bar</mat-option>
+          <mat-option value="Bar & Restaurant">Bar & Restaurant</mat-option>
+          <mat-option value="Beach">Beach</mat-option>
+          <mat-option value="Beach & Bar">Beach & Bar</mat-option>
+          <mat-option value="Beach & Bar & Restaurant">Beach & Bar & Restaurant</mat-option>
+          <mat-option value="Beach & Restaurant">Beach & Restaurant</mat-option>
+          <mat-option value="Club">Club</mat-option>
+          <mat-option value="Hotel">Hotel</mat-option>
+          <mat-option value="Hotel & Bar">Hotel & Bar</mat-option>
+          <mat-option value="Hotel & Bar & Restaurant">Hotel & Bar & Restaurant</mat-option>
+          <mat-option value="Hotel & Restaurant">Hotel & Restaurant</mat-option>
+          <mat-option value="Restaurant">Restaurant</mat-option>
+          <mat-option value="Sports">Sports</mat-option>
+          <mat-option value="Sports & Bar">Sports & Bar</mat-option>
+          <mat-option value="Sports & Bar & Restaurant">Sports & Bar & Restaurant</mat-option>
+          <mat-option value="Sports & Restaurant">Sports & Restaurant</mat-option>
+          <mat-option value="None">None</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="form-field">
+        <mat-label class="labels" >Town</mat-label>
+        <input matInput type="text" formControlName="town">
+        <mat-error *ngIf="formData.controls.town.hasError('required') && formData.controls.town.touched">
+          Sorry, hangout town is required!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="form-field">
+        <mat-label class="labels" >City</mat-label>
+        <input matInput formControlName="city_name" type="text" (keyup)=filter() [(ngModel)]=query autocomplete="nope" placeholder="Type and then select from dropdown">
+        <mat-error *ngIf="formData.controls.city_name.hasError('required') && formData.controls.city_name.touched">
+          Sorry, your hangout city is required!
+        </mat-error>
+      </mat-form-field>
+
+      <input type="hidden" formControlName="city_id" [ngModel]="cityId" autocomplete="nope">
+
+      <div *ngIf="filteredList.length > 0">
+        <mat-list *ngFor="let city of filteredList">
+          <mat-list-item class="drop-down" (click)="select(city)">
+            {{city['name']}}
+          </mat-list-item>
+        </mat-list>
+      </div>
+
+      <mat-form-field class="form-field">
+        <mat-label class="labels" >Currency Code</mat-label>
+        <input matInput formControlName="currency_code" type="text" (keyup)=filterCur()
+               [(ngModel)]=queryCur autocomplete="off">
+        <mat-error *ngIf="formData.controls.currency_code.hasError('required') && formData.controls.currency_code.touched">
+          Sorry, your preferred currency is required!
+        </mat-error>
+      </mat-form-field>
+
+      <div *ngIf="curfilteredList.length > 0">
+        <mat-list *ngFor="let cur of curfilteredList">
+          <mat-list-item class="drop-down" (click)="selectCur(cur)">
+            {{cur['cur_code']}}
+          </mat-list-item>
+        </mat-list>
+      </div>
+
+      <mat-card-actions align="end">
+        <button mat-flat-button (click)="dismissModal()">
+          Cancel
+        </button>
+        <button mat-flat-button color="accent" class="submit" type="submit" [disabled]="!formData.valid">Submit
+        </button>
+        </mat-card-actions>
+    </form>
+    <mat-progress-bar *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+  </mat-card>
+</div>

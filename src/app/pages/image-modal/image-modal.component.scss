@@ -1,0 +1,75 @@
+.img-div {
+  position: relative;
+  background: black;
+  height: 100%;
+  width: 100%;
+}
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+.back-btn{
+  margin-right: 10px;
+}
+.toolbar-space {
+  flex: 1 1 auto;
+}
+mat-toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: transparent;
+}
+button {
+  background: rgba(0,0,0,0.5);
+}
+mat-icon {
+  color: white;
+}
+.left-btn {
+  position: absolute;
+  top: 50%;
+  //bottom: auto;
+  left: 10px;
+}
+.right-btn {
+  position: absolute;
+  top: 50%;
+  //bottom: auto;
+  right: 10px;
+}
+.description {
+  width: 70%;
+  position: absolute;
+  bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  display: block;
+}
+.edit-btn {
+  float: right;
+}
+.des-div {
+  border-radius: 10px;
+  background: rgba(0,0,0,0.7);
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+.input {
+  color: white;
+}
+.labels {
+  color: white;
+}
+mat-form-field {
+  width: 100%;
+}

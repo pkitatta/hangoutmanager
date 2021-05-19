@@ -1,0 +1,168 @@
+.home-content {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  background-color: gainsboro;
+}
+.home-bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 50%;
+  //background: linear-gradient(to bottom right, #180018, white);
+  background: #180018;
+}
+.top {
+  color: white;
+  background: #180018;
+  position: sticky;
+  position: -webkit-sticky; /* For macOS/iOS Safari */
+  top: 0; /* Sets the sticky toolbar to be on top */
+  z-index: 1000; /* Ensure that your app's content doesn't overlap the toolbar */
+}
+.toolbar-space {
+  flex: 1 1 auto;
+}
+.signin {
+  margin: auto;
+  width: 40%;
+  z-index: 10;
+}
+.hang-grid {
+  position: absolute;
+  top: 40%;
+  right: 20px;
+  left: 20px;
+  z-index: 10;
+}
+.mat-card {
+  height: 200px;
+  width: 100%;
+  text-align: start;
+}
+.mat-card img {
+  position: relative;
+  height: 100px;
+  width: 100px;
+}
+a.fill-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  height: 100%;
+  width: 100%;
+  text-decoration: none;
+}
+.mat-card-content .thumb {
+  height: 60px;
+  width: 60px;
+}
+.mat-card-header {
+  margin-bottom: auto;
+  margin-top: auto;
+  color: #443266;
+  mat-card-title {
+    margin-top: 30px;
+  }
+}
+.create-button {
+  background-color: #fdc70f;
+  position: absolute;
+  top: 40%;
+  right: 40px;
+  border-radius: 50px;
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 200px !important;
+  height: 50px !important;
+}
+.loading {
+  position: absolute;
+  top: 40%;
+  right: 40px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.loading p {
+  text-align: center;
+  font-size: 60px;
+  color: grey;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.welcome {
+  position: absolute;
+  bottom: 40%;
+  right: 40px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.welcome p {
+  text-align: center;
+  font-size: 30px;
+  color: #eeeeee;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.create-tile {
+  position: relative;
+  align-items: center;
+  p {
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    font-size: 30px;
+    color: #180018;
+  }
+}
+.card-button {
+  position: absolute;
+  bottom: 10%;
+  left: 10%;
+  border-radius: 50px;
+  width: 200px !important;
+  height: 50px !important;
+  //margin-left: auto;
+  //margin-right: auto;
+}
+mat-progress-bar {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+.hang-button {
+  background-color: #443266;
+  border-radius: 50px;
+  //margin-top: auto;
+  margin-bottom: 20px;
+  width: 200px !important;
+  height: 50px !important;
+}
+.profile {
+  //background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+.thumb-icon {
+  background: grey;
+  text-align: center;
+  height: 100px;
+  width: 100px;
+  p {
+    height: 100px;
+    line-height: 100px;
+    vertical-align: middle;
+  }
+}
+.card-heading {
+  margin-top: 5px !important;
+}
+.img-ava {
+  height: 80px;
+  width: 80px;
+}
+.prof-img {
+  background: grey;
+}

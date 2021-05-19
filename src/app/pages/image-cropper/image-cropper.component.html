@@ -1,0 +1,38 @@
+<div class="content">
+  <mat-toolbar>
+    <div class="back-btn">
+      <button (click)="dismissModal()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+    <input type="file" accept="image/x-png,image/jpeg,image/gif" (change)="fileChangeEvent($event)" />
+    <span class="toolbar-space"></span>
+    <div *ngIf="this.croppedImage !== ''">
+      <button mat-button color="primary" *ngIf="!progressBar" (click)="uploadImg()">
+        <mat-icon>check</mat-icon>
+        Done
+      </button>
+    </div>
+  </mat-toolbar>
+
+
+  <div class="inner-img-content">
+    <mat-progress-bar *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+    <div class="cropper-div">
+      <image-cropper class="cropper"
+                     [imageChangedEvent]="imageChangedEvent"
+                     [maintainAspectRatio]="true"
+                     [aspectRatio]="1 / 1"
+                     [resizeToWidth] = resizeToWidth
+                     [resizeToHeight] = resizeToHeight
+                     [onlyScaleDown] = onlyScaleDown
+                     format="jpeg"
+                     [imageQuality] = imageQuality
+                     (imageCropped)="imageCropped($event)"
+                     (imageLoaded)="imageLoaded()"
+                     (cropperReady)="cropperReady()"
+                     (loadImageFailed)="loadImageFailed()"
+      ></image-cropper>
+    </div>
+  </div>
+</div>

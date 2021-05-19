@@ -3,7 +3,17 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase: {
+    apiKey: 'AIzaSyBX0yKPDxkWb8T9F3zXAISbsdad3Hkoj7s',
+    authDomain: 'plotavenue-dev.firebaseapp.com',
+    databaseURL: 'https://plotavenue-dev.firebaseio.com',
+    projectId: 'plotavenue-dev',
+    storageBucket: 'plotavenue-dev.appspot.com',
+    messagingSenderId: '47730737760',
+    appId: '1:47730737760:web:b0473506bc0f58d539f905',
+    measurementId: 'G-HKNNTFX9CY'
+  }
 };
 
 /*

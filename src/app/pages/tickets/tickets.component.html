@@ -1,0 +1,251 @@
+<mat-toolbar>
+  <h1>Complementaries, Tickets and Toupons</h1>
+</mat-toolbar>
+<mat-tab-group *ngIf="!addForm && !editForm">
+  <mat-tab label="Comps">
+    <div class="mat-elevation-z8 tab-div">
+      <mat-progress-bar style="margin-bottom: 0" *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+      <table mat-table [dataSource]="dataSource" matSort>
+
+        <!-- Title Column -->
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 30%"> Title </th>
+          <td class="name-cell" mat-cell *matCellDef="let element"> {{element.title}} </td>
+        </ng-container>
+
+        <!-- Remaining / Issued Column -->
+        <ng-container matColumnDef="issued">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Issue / Remain </th>
+          <td mat-cell *matCellDef="let element"> {{element.remaining}} / {{element.issued}} </td>
+        </ng-container>
+
+<!--        &lt;!&ndash; Remaining Column &ndash;&gt;-->
+<!--        <ng-container matColumnDef="remaining">-->
+<!--          <th mat-header-cell *matHeaderCellDef mat-sort-header> Remaining </th>-->
+<!--          <td mat-cell *matCellDef="let element"> {{element.remaining}} </td>-->
+<!--        </ng-container>-->
+
+        <!-- Start Column -->
+        <ng-container matColumnDef="start">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Start </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.start_date_time | date: 'h:mm a'}},
+            {{element.start_date_time | date: 'd MMM, y'}}
+          </td>
+        </ng-container>
+
+        <!-- End Column -->
+        <ng-container matColumnDef="end">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> End </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.end_date_time | date: 'h:mm a'}},
+            {{element.end_date_time | date: 'd MMM, y'}}
+          </td>
+        </ng-container>
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Action</th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button  *ngIf="!element.deleted_at" (click)="compEdit(element)">
+              <mat-icon color="accent">edit</mat-icon>
+            </button>
+            <button mat-icon-button *ngIf="!element.deleted_at" (click)="compCancel(element)">
+              <mat-icon color="warn">delete</mat-icon>
+            </button>
+            <button mat-button disabled  *ngIf="element.deleted_at">
+              Canceled
+            </button>
+            <button mat-button color="primary" *ngIf="element.deleted_at" (click)="compRestore(element)">
+              Restore
+            </button>
+          </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 15]" showFirstLastButtons></mat-paginator>
+    </div>
+    <div class="fab-div">
+      <button mat-fab color="primary" (click)="onTicketAdd()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </mat-tab>
+  <mat-tab label="Coupons"> Coming Soon </mat-tab>
+  <mat-tab label="Tickets"> Coming Soon </mat-tab>
+</mat-tab-group>
+
+<div *ngIf="addForm && !editForm">
+  <mat-card class="add-card">
+    <mat-card-title>New Comp</mat-card-title>
+    <mat-card-content *ngIf="compList.length > 0">
+      <form [formGroup]="formData" (ngSubmit)="submit()">
+        <mat-form-field class="form-field">
+          <mat-label>Image Template</mat-label>
+          <mat-select formControlName="ticketId">
+            <mat-option *ngFor="let comp of compList" [value]=comp.id>{{comp.name}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="formData.controls.ticketId.hasError('required') && formData.controls.ticketId.touched">
+            Sorry, field category is required!
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Title</mat-label>
+          <input matInput type="text" formControlName="title" placeholder="Title is optional. Max 30 characters">
+          <mat-error *ngIf="formData.controls.title.hasError('required') && formData.controls.title.touched">
+            Sorry, field title is required!
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Quantity</mat-label>
+          <input matInput type="number" min=1 formControlName="issuedQty" placeholder="max 30 characters">
+          <mat-error *ngIf="formData.controls.issuedQty.hasError('required') && formData.controls.issuedQty.touched">
+            Sorry, field quantity is required!
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Dates -->
+        <div formGroupName="dates">
+
+          <!-- Start Dates -->
+          <div matLine class="box">
+            <div class="form-date">
+              <mat-form-field >
+                <mat-label>Start date</mat-label>
+                <input matInput [matDatepicker]="picker" [min]="todayDate" formControlName="start_date_time">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <div class="form-time">
+              <input matInput placeholder="Start time" aria-label="Editable dial"
+                     formControlName="start_time"
+                     [ngxTimepicker]="editableDial" [format]="24" readonly>
+              <ngx-material-timepicker #editableDial [enableKeyboardInput]="true"></ngx-material-timepicker>
+            </div>
+          </div>
+
+          <!-- End Dates -->
+          <div class="box">
+            <div  class="form-date">
+              <mat-form-field>
+                <mat-label>End date</mat-label>
+                <input matInput [matDatepicker]="picker1" [min]="todayDate" formControlName="end_date_time">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #picker1></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <div class="form-time">
+              <input matInput placeholder="Start time" aria-label="Editable dial"
+                     formControlName="end_time"
+                     [ngxTimepicker]="editableDial2" [format]="24" readonly>
+              <ngx-material-timepicker #editableDial2 [enableKeyboardInput]="true"></ngx-material-timepicker>
+            </div>
+          </div>
+          <mat-error *ngIf="formData.get(['dates','start_date_time']).value > formData.get(['dates','end_date_time']).value && formData.get(['dates','end_date_time']).value != null">
+            End date has to be greater than start date!
+          </mat-error>
+        </div>
+        <mat-card-actions align="end">
+          <button mat-flat-button color="primary" type="submit">
+            Create
+          </button>
+        </mat-card-actions>
+      </form>
+    </mat-card-content>
+    <mat-card-actions align="start">
+      <button mat-stroked-button (click)="addForm = false">
+        Cancel
+      </button>
+    </mat-card-actions>
+    <mat-progress-bar style="margin-bottom: 0" *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+  </mat-card>
+</div>
+
+<div *ngIf="!addForm && editForm">
+  <mat-card class="add-card">
+    <mat-card-title>Edit Comp</mat-card-title>
+    <mat-card-content *ngIf="compList.length > 0">
+      <form [formGroup]="formData" (ngSubmit)="submitEdit()">
+        <mat-form-field class="form-field">
+          <mat-label>Image Template</mat-label>
+          <mat-select formControlName="ticketId">
+            <mat-option *ngFor="let comp of compList" [value]=comp.type>{{comp.name}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="formData.controls.ticketId.hasError('required') && formData.controls.ticketId.touched">
+            Sorry, field category is required!
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Title</mat-label>
+          <input matInput type="text" formControlName="title" placeholder="Title is optional. Max 30 characters">
+          <mat-error *ngIf="formData.controls.title.hasError('required') && formData.controls.title.touched">
+            Sorry, field title is required!
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Dates -->
+        <div formGroupName="dates">
+
+          <!-- Start Dates -->
+          <div matLine class="box">
+            <div class="form-date">
+              <mat-form-field >
+                <mat-label>Start date</mat-label>
+                <input matInput [matDatepicker]="picker" [min]="todayDate" formControlName="start_date_time">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <div class="form-time">
+              <input matInput placeholder="Start time" aria-label="Editable dial"
+                     formControlName="start_time"
+                     [ngxTimepicker]="editableDial" [format]="24" readonly>
+              <ngx-material-timepicker #editableDial [enableKeyboardInput]="true"></ngx-material-timepicker>
+            </div>
+          </div>
+
+          <!-- End Dates -->
+          <div class="box">
+            <div  class="form-date">
+              <mat-form-field>
+                <mat-label>End date</mat-label>
+                <input matInput [matDatepicker]="picker1" [min]="todayDate" formControlName="end_date_time">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #picker1></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <div class="form-time">
+              <input matInput placeholder="Start time" aria-label="Editable dial"
+                     formControlName="end_time"
+                     [ngxTimepicker]="editableDial2" [format]="24" readonly>
+              <ngx-material-timepicker #editableDial2 [enableKeyboardInput]="true"></ngx-material-timepicker>
+            </div>
+          </div>
+          <mat-error *ngIf="formData.get(['dates','start_date_time']).value > formData.get(['dates','end_date_time']).value && formData.get(['dates','end_date_time']).value != null">
+            End date has to be greater than start date!
+          </mat-error>
+        </div>
+        <mat-card-actions align="end">
+          <button mat-flat-button color="primary" type="submit">
+            Edit
+          </button>
+        </mat-card-actions>
+      </form>
+    </mat-card-content>
+    <mat-card-actions align="start">
+      <button mat-stroked-button (click)="editForm = false">
+        Cancel
+      </button>
+    </mat-card-actions>
+    <mat-progress-bar style="margin-bottom: 0" *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+  </mat-card>
+</div>

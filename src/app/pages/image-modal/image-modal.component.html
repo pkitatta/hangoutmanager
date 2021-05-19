@@ -1,0 +1,39 @@
+<!--<mat-dialog-container>-->
+<!--  <div class="img-div">-->
+<!--    <img [src]="image">-->
+<!--  </div>-->
+<!--</mat-dialog-container>-->
+<div class="img-div">
+  <mat-progress-bar style="margin-bottom: 0" *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+  <mat-toolbar>
+    <div class="back-btn">
+      <button mat-icon-button (click)="dismissModal()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+    <span class="toolbar-space"></span>
+    <div *ngIf="admin">
+      <button mat-icon-button (click)="deletePhoto($event)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <img [src]="image">
+  <button mat-icon-button class="left-btn" [disabled]="imageIndex===0" (click)="onClickPrev()">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+  <button mat-icon-button class="right-btn" [disabled]="imageIndex===imageList.length-1" (click)="onClickNext()">
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+  <div class="description" *ngIf="!edit">
+    <p>{{description ? description : 'Add description'}} <span class="edit-btn"><button mat-icon-button (click)="onClickEditMessage()"><mat-icon color="accent">edit</mat-icon></button></span></p>
+  </div>
+  <div class="des-div">
+    <mat-form-field *ngIf="edit">
+      <mat-label class="labels" >Add description (optional)</mat-label>
+      <input class="input" matInput maxlength="500" placeholder="Description (optional)" [formControl]='desc'>
+      <button matPrefix mat-icon-button (click)="edit = false"><mat-icon>close</mat-icon></button>
+      <button matSuffix mat-icon-button (click)="submitMessage()"><mat-icon>check</mat-icon></button>
+    </mat-form-field>
+  </div>
+</div>

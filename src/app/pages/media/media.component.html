@@ -1,0 +1,61 @@
+<mat-toolbar>
+  <h1>Photos and Videos</h1>
+</mat-toolbar>
+<mat-progress-bar style="margin-bottom: 0" *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+<mat-tab-group mat-align-tabs="start" [selectedIndex]=type (selectedTabChange)="segmentChanged($event)">
+  <mat-tab label="Hangout">
+    <div  class="list-div">
+      <div *ngFor="let item of hangPhotoList | mediaGroup:'photo_time'">
+        <mat-label>{{item.key | date}}</mat-label>
+        <mat-grid-list [gutterSize]="'10px'" class="hang-grid" [cols]="cols" rowHeight="1:1">
+          <mat-grid-tile
+            *ngFor="let photo of item.value"
+            [colspan]="1"
+            [rowspan]="1">
+            <div class="img-div" (click)="enlargeImage(photo, 'admin')">
+              <img [src]=photo.photo.thumbnail.thumb />
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+    </div>
+
+    <button color="primary" class="fab" mat-fab (click)="addPhoto()"><mat-icon>add_to_photos</mat-icon></button>
+  </mat-tab>
+  <mat-tab label="Users">
+    <div  class="list-div">
+      <div *ngFor="let item of userPhotoList | mediaGroup:'photo_time'">
+        <mat-label>{{item.key | date}}</mat-label>
+        <mat-grid-list [gutterSize]="'10px'" class="hang-grid" [cols]="cols" rowHeight="1:1">
+          <mat-grid-tile
+            *ngFor="let photo of item.value"
+            [colspan]="1"
+            [rowspan]="1">
+            <div class="img-div" (click)="enlargeImage(photo, 'user')">
+              <img [src]=photo.photo.thumbnail.thumb />
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Videos">
+    <div  class="list-div">
+      <div *ngFor="let item of videoList | mediaGroup:'video_time'">
+        <mat-label>{{item.key | date}}</mat-label>
+        <mat-grid-list [gutterSize]="'10px'" class="hang-grid" [cols]="cols" rowHeight="1:1">
+          <mat-grid-tile
+            *ngFor="let vid of item.value"
+            [colspan]="1"
+            [rowspan]="1">
+            <div class="vid-div" (click)="enlargeVideo(vid.video, 'admin')">
+              <img [src]=vid.video.vthumb />
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+    </div>
+
+    <button color="primary" class="fab" mat-fab><mat-icon>add_to_photos</mat-icon></button>
+  </mat-tab>
+</mat-tab-group>

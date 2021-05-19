@@ -1,0 +1,44 @@
+.body-content {
+  margin: 40px 10px 40px 10px;
+  //display: flex;
+}
+.cover-img {
+  position: relative;
+  img{
+    background-size: cover;
+  }
+  img:hover {
+    opacity: 0.5;
+  }
+}
+mat-card {
+  max-width: 500px;
+  margin: auto;
+}
+.card-img {
+  position: relative;
+}
+.cov-thumb {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  button {
+    background: rgb(255, 255, 255, 0.3);
+  }
+}
+.info-card {
+  height: 100%;
+  width: 100%;
+}
+.form-field {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 100%;
+}
+.menuDesc{
+  height: 300px;
+  overflow-y: auto;
+  p{
+    margin-bottom: 40px;
+  }
+}
