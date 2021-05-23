@@ -26,8 +26,7 @@
       <span [matBadge]="orderList.length" matBadgeOverlap="false" [matBadgeHidden]="orderList.length < 1">Orders</span>
     </ng-template>
     <mat-accordion class="ord-list">
-      <mat-expansion-panel *ngFor="let order of orderList | orderBy:'orderTime':'asc'" (opened)="panelOpenState = true"
-                           (closed)="panelOpenState = false">
+      <mat-expansion-panel *ngFor="let order of orderList | orderBy:'orderTime':'asc'; index as i; trackBy: trackByIdentity"  (afterExpand)="onPanelClick($event, order,'seen')">
         <mat-expansion-panel-header>
           <mat-panel-title>
             <label>{{order.orderTime | date: 'hh:mm a'}}</label>
@@ -54,6 +53,13 @@
             </ul>
           </mat-card-content>
           <mat-card-actions align="end">
+            <button mat-stroked-button *ngIf="!order.canceled && order.status === 'seen'" color="primary" (click)="onStatusUpdate(order,'prep')">
+              Ord Prep
+            </button>
+            <button mat-stroked-button *ngIf="!order.canceled && order.status === 'prep'" color="primary" (click)="onStatusUpdate(order,'ready')">
+              Ord Ready
+            </button>
+            <span class="toolbar-space"></span>
             <button mat-stroked-button *ngIf="!order.canceled" color="warn" (click)="cancelOrder(order)">
               Cancel Order
             </button>

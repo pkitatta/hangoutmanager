@@ -226,15 +226,26 @@ export class FirestoreService {
         deliveryTime: Date.now().toString()
       });
 
-    return this.firestore
-      .collection('customers')
-      .doc(order.currentMomentId)
-      .collection('groupMates')
-      .doc(order.orderFor.uid)
-      .update({
-        mealAvatar: order.section = 'bar' ? order.order[0].avatarUrl : order.order[0].photoUrl,
-        currentMeal: order.section = 'bar' ? order.order[0].drinkName : order.order[0].mealName
-      });
+    if (order.section === 'restaurant')
+      return this.firestore
+        .collection('customers')
+        .doc(order.currentMomentId)
+        .collection('groupMates')
+        .doc(order.orderFor.uid)
+        .update({
+          mealAvatar: order.order[0].photoUrl,
+          currentMeal: order.order[0].name
+        });
+    else
+      return this.firestore
+        .collection('customers')
+        .doc(order.currentMomentId)
+        .collection('groupMates')
+        .doc(order.orderFor.uid)
+        .update({
+          drinkAvatar: order.order[0].photoUrl,
+          currentDrink: order.order[0].name
+        });
   }
 
   async sendToDeliveredOrders(did: string, odid: string) {
@@ -369,6 +380,15 @@ export class FirestoreService {
       .doc(odid)
       .update({
         paymentMethod: '',
+      });
+  }
+
+  async seenOrder(did: any, odid: any, status: any) {
+    return this.firestore
+      .collection('orders', ref => ref.where('hangoutId', '==', did))
+      .doc(odid)
+      .update({
+        status: status,
       });
   }
 }

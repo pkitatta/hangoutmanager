@@ -36,6 +36,9 @@ mat-expansion-panel-header {
   bottom: 15px;
   right: 15px;
 }
+.toolbar-space {
+  flex: 1 1 auto;
+}
 
 //:host ::ng-deep .mat-tab-header {
 //  position: fixed !important;

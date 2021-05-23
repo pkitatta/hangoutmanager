@@ -26,6 +26,10 @@ mat-expansion-panel-header {
   margin-bottom: 10px;
 }
 
+.toolbar-space {
+  flex: 1 1 auto;
+}
+
 //:host ::ng-deep .mat-tab-header {
 //  position: fixed !important;
 //  z-index:500;

@@ -24,14 +24,13 @@
       <span [matBadge]="orderList.length" matBadgeOverlap="false" [matBadgeHidden]="orderList.length < 1">Orders</span>
     </ng-template>
     <mat-accordion class="ord-list">
-      <mat-expansion-panel *ngFor="let order of orderList | orderBy:'orderTime':'asc'" (opened)="panelOpenState = true"
-                           (closed)="panelOpenState = false">
+      <mat-expansion-panel *ngFor="let order of orderList | orderBy:'orderTime':'asc'; index as i; trackBy: trackByIdentity"  (afterExpand)="onPanelClick($event, order,'seen')">
         <mat-expansion-panel-header>
           <mat-panel-title>
             <label>{{order.tableNumber}}</label>
           </mat-panel-title>
           <mat-panel-description>
-            {{order.order[0]['qty']}} {{order.order[0]['drinkName']}}{{order.order.length > 1 ? '... +' + (order.order.length-1) +'more' : '' }}
+            {{order.order[0]['qty']}} {{order.order[0]['name']}}{{order.order.length > 1 ? '... +' + (order.order.length-1) +'more' : '' }}
           </mat-panel-description>
         </mat-expansion-panel-header>
         <mat-card>
@@ -44,11 +43,18 @@
           <mat-card-content>
             <ul>
               <li *ngFor="let i of order.order">
-                <p style="font-size: 20px">{{i['qty']}} {{i['drinkName']}}</p>
+                <p style="font-size: 20px">{{i['qty']}} {{i['name']}}</p>
               </li>
             </ul>
           </mat-card-content>
             <mat-card-actions align="end">
+              <button mat-stroked-button *ngIf="!order.canceled && order.status === 'seen'" color="primary" (click)="onStatusUpdate(order,'prep')">
+                Ord Prep
+              </button>
+              <button mat-stroked-button *ngIf="!order.canceled && order.status === 'prep'" color="primary" (click)="onStatusUpdate(order,'ready')">
+                Ord Ready
+              </button>
+              <span class="toolbar-space"></span>
               <button mat-stroked-button *ngIf="!order.canceled" color="warn" (click)="cancelOrder(order)">
                 Cancel Order
               </button>
@@ -78,7 +84,7 @@
             <label>{{order.tableNumber}}</label>
           </mat-panel-title>
           <mat-panel-description>
-            {{order.order[0]['qty']}} {{order.order[0]['drinkName']}}{{order.order.length > 1 ? '... +' + (order.order.length-1) +'more' : '' }}
+            {{order.order[0]['qty']}} {{order.order[0]['name']}}{{order.order.length > 1 ? '... +' + (order.order.length-1) +'more' : '' }}
           </mat-panel-description>
           <mat-icon *ngIf="order.paymentMethod === 'cash'" style="color: green;">paid</mat-icon>
         </mat-expansion-panel-header>
@@ -101,7 +107,7 @@
           <mat-card-content>
             <ul>
               <li *ngFor="let i of order.order">
-                <p style="font-size: 20px">{{i['qty']}} {{i['drinkName']}}</p>
+                <p style="font-size: 20px">{{i['qty']}} {{i['name']}}</p>
               </li>
             </ul>
           </mat-card-content>

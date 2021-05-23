@@ -175,4 +175,19 @@ export class RestaurantServiceComponent implements OnInit {
     });
   }
 
+  onPanelClick($event: any, order: any, status: any) {
+    console.log('Panel opened', status);
+    if (order.status === '')
+      this.firestoreService.seenOrder(this.did, order.odid, status);
+  }
+
+  onStatusUpdate(order: any, status: any) {
+    console.log('Panel opened', status);
+    this.firestoreService.seenOrder(this.did, order.odid, status);
+  }
+
+  /// This prevents the expansion panal from closing on data update
+  trackByIdentity(index: any, item: any){
+    return item.tableNumber;
+  }
 }

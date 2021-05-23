@@ -161,4 +161,20 @@ export class TakeawayServiceComponent implements OnInit {
     await this.firestoreService.rejCash(this.did, order.odid);
     this.progressBar = false;
   }
+
+  onPanelClick($event: any, order: any, status: any) {
+    console.log('Panel opened', status);
+    if (order.status === '')
+      this.firestoreService.seenOrder(this.did, order.odid, status);
+  }
+
+  onStatusUpdate(order: any, status: any) {
+    console.log('Panel opened', status);
+    this.firestoreService.seenOrder(this.did, order.odid, status);
+  }
+
+  /// This prevents the expansion panal from closing on data update
+  trackByIdentity(index: any, item: any){
+    return item.tableNumber;
+  }
 }
